@@ -37,6 +37,7 @@ namespace Affix
 
         private Harmony _harmony;
         private AffixTooltipProvider _tooltipProvider;
+        private AffixSlotVisualProvider _slotVisualProvider;
 
         private void Awake()
         {
@@ -59,9 +60,12 @@ namespace Affix
             _harmony = new Harmony(PluginGUID);
             _harmony.PatchAll();
 
-            // Register tooltip provider with Veneer
+            // Register Veneer providers
             _tooltipProvider = new AffixTooltipProvider();
             Veneer.Components.Composite.VeneerTooltip.RegisterProvider(_tooltipProvider);
+
+            _slotVisualProvider = new AffixSlotVisualProvider();
+            Veneer.Components.Specialized.VeneerItemSlot.RegisterVisualProvider(_slotVisualProvider);
 
             // Register Munin commands (if Munin is loaded)
             RegisterCommands();
@@ -73,11 +77,17 @@ namespace Affix
         {
             UnregisterCommands();
 
-            // Unregister tooltip provider
+            // Unregister Veneer providers
             if (_tooltipProvider != null)
             {
                 Veneer.Components.Composite.VeneerTooltip.UnregisterProvider(_tooltipProvider);
                 _tooltipProvider = null;
+            }
+
+            if (_slotVisualProvider != null)
+            {
+                Veneer.Components.Specialized.VeneerItemSlot.UnregisterVisualProvider(_slotVisualProvider);
+                _slotVisualProvider = null;
             }
 
             _harmony?.UnpatchSelf();
