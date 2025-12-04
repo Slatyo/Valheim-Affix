@@ -1,0 +1,13 @@
+{
+    "name": "Affix",
+    "author": "Slatyo",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/Slatyo/Valheim-Affix",
+    "description": "Random affixes and rarity tiers for Valheim gear - adds ARPG-style loot with procedural stat modifiers",
+    "dependencies": [
+        "denikson-BepInExPack_Valheim-5.4.2333",
+        "ValheimModding-Jotunn-2.26.1",
+        "Slatyo-Prime-1.0.0",
+        "Slatyo-Veneer-1.0.0"
+    ]
+}

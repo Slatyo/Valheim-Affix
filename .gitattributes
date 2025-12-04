@@ -1,0 +1,56 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Custom for Visual Studio
+*.cs diff=csharp
+
+# Standard to msysgit
+*.doc diff=astextplain
+*.DOC diff=astextplain
+*.docx diff=astextplain
+*.DOCX diff=astextplain
+*.dot diff=astextplain
+*.DOT diff=astextplain
+*.pdf diff=astextplain
+*.PDF diff=astextplain
+*.rtf diff=astextplain
+*.RTF diff=astextplain
+*.md text
+*.adoc text
+*.textile text
+*.mustache text
+*.csv text
+*.tab text
+*.tsv text
+*.txt text
+
+# Graphics (binary)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+
+# Archives
+*.7z binary
+*.gz binary
+*.tar binary
+*.zip binary
+
+# Unity
+*.meta text
+*.unity binary
+*.prefab text
+*.mat text
+*.asset text
+*.anim text
+*.controller text
+
+# Windows
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Linux/Mac
+*.sh text eol=lf
