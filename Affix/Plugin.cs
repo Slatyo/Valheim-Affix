@@ -15,13 +15,13 @@ namespace Affix
     /// </summary>
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid)]
-    [BepInDependency("com.prime.valheim")]
+    [BepInDependency("com.slatyo.prime")]
     [BepInDependency("com.slatyo.veneer")]
-    [BepInDependency("com.slaty.munin", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.slatyo.munin", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string PluginGUID = "com.affix.valheim";
+        public const string PluginGUID = "com.slatyo.affix";
         public const string PluginName = "Affix";
         public const string PluginVersion = "1.0.0";
 
@@ -101,7 +101,7 @@ namespace Affix
             try
             {
                 // Check if Munin is loaded before registering
-                if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.slaty.munin"))
+                if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.slatyo.munin"))
                 {
                     Commands.AffixCommands.Register();
                 }
@@ -116,7 +116,7 @@ namespace Affix
         {
             try
             {
-                if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.slaty.munin"))
+                if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.slatyo.munin"))
                 {
                     Commands.AffixCommands.Unregister();
                 }
