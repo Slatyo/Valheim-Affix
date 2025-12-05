@@ -137,6 +137,17 @@ namespace Affix
                 { "affix_rarity_epic", "Epic" },
                 { "affix_rarity_legendary", "Legendary" },
             });
+
+            // === GERMAN TRANSLATIONS ===
+            loc.AddTranslation("German", new System.Collections.Generic.Dictionary<string, string>
+            {
+                // Rarity names
+                { "affix_rarity_common", "Gewöhnlich" },
+                { "affix_rarity_uncommon", "Ungewöhnlich" },
+                { "affix_rarity_rare", "Selten" },
+                { "affix_rarity_epic", "Episch" },
+                { "affix_rarity_legendary", "Legendär" },
+            });
         }
     }
 }
