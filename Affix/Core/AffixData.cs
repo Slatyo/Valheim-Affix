@@ -107,6 +107,69 @@ namespace Affix.Core
         }
 
         /// <summary>
+        /// Checks if an item has a unique legendary ability.
+        /// </summary>
+        public static bool HasUniqueAbility(ItemDrop.ItemData item)
+        {
+            if (item?.m_customData == null) return false;
+            return item.m_customData.ContainsKey(AffixDataKeys.UniqueEffect);
+        }
+
+        /// <summary>
+        /// Gets the unique legendary ability on an item.
+        /// </summary>
+        public static LegendaryAbilityDefinition GetUniqueAbility(ItemDrop.ItemData item)
+        {
+            if (item?.m_customData == null) return null;
+
+            if (item.m_customData.TryGetValue(AffixDataKeys.UniqueEffect, out var abilityId))
+            {
+                if (string.IsNullOrEmpty(abilityId)) return null;
+                return LegendaryAbilityRegistry.Instance.Get(abilityId);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Sets the unique legendary ability on an item.
+        /// </summary>
+        public static void SetUniqueAbility(ItemDrop.ItemData item, LegendaryAbilityDefinition ability)
+        {
+            if (item == null) return;
+
+            item.m_customData ??= new Dictionary<string, string>();
+
+            if (ability != null)
+            {
+                item.m_customData[AffixDataKeys.UniqueEffect] = ability.Id;
+            }
+            else
+            {
+                item.m_customData.Remove(AffixDataKeys.UniqueEffect);
+            }
+        }
+
+        /// <summary>
+        /// Sets the unique legendary ability on an item by ID.
+        /// </summary>
+        public static void SetUniqueAbility(ItemDrop.ItemData item, string abilityId)
+        {
+            if (item == null) return;
+
+            item.m_customData ??= new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(abilityId))
+            {
+                item.m_customData[AffixDataKeys.UniqueEffect] = abilityId;
+            }
+            else
+            {
+                item.m_customData.Remove(AffixDataKeys.UniqueEffect);
+            }
+        }
+
+        /// <summary>
         /// Gets the item type for affix filtering based on Valheim's ItemType.
         /// </summary>
         public static ItemType GetAffixItemType(ItemDrop.ItemData item)

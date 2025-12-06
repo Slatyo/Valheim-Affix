@@ -18,6 +18,7 @@ namespace Affix
     [BepInDependency("com.slatyo.prime")]
     [BepInDependency("com.slatyo.veneer")]
     [BepInDependency("com.slatyo.munin", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.slatyo.spark", BepInDependency.DependencyFlags.SoftDependency)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public class Plugin : BaseUnityPlugin
     {
@@ -49,6 +50,9 @@ namespace Affix
             // Register default affixes
             DefaultAffixes.RegisterAll();
             Log.LogInfo($"Registered {AffixRegistry.Count} affixes");
+
+            // Initialize legendary ability registry
+            LegendaryAbilityRegistry.Instance.Initialize();
 
             // Register test drop tables
             Affix.DropTables.TestDropTables.Register();

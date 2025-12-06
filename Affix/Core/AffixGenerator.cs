@@ -12,6 +12,37 @@ namespace Affix.Core
         private static readonly System.Random _random = new();
 
         /// <summary>
+        /// Generates affixes and unique ability for an item.
+        /// </summary>
+        /// <param name="item">The item to generate affixes for.</param>
+        /// <param name="rarity">The rarity tier for the item.</param>
+        public static void GenerateForItem(ItemDrop.ItemData item, Rarity rarity)
+        {
+            if (item == null) return;
+
+            var itemType = AffixData.GetAffixItemType(item);
+            var affixes = GenerateAffixes(itemType, rarity);
+
+            // Set affixes
+            AffixData.SetAffixes(item, rarity, affixes);
+
+            // For Legendary items, also roll a unique ability
+            if (rarity == Rarity.Legendary)
+            {
+                var uniqueAbility = LegendaryAbilityRegistry.Instance.GetRandomForItem(item);
+                if (uniqueAbility != null)
+                {
+                    AffixData.SetUniqueAbility(item, uniqueAbility);
+                    Plugin.Log?.LogDebug($"[Affix] Rolled legendary ability '{uniqueAbility.Id}' for {item.m_shared?.m_name}");
+                }
+                else
+                {
+                    Plugin.Log?.LogWarning($"[Affix] No valid legendary ability found for {item.m_shared?.m_name}");
+                }
+            }
+        }
+
+        /// <summary>
         /// Generates a set of affixes for an item.
         /// </summary>
         /// <param name="itemType">The type of item to generate affixes for.</param>

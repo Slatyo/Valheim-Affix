@@ -4,6 +4,7 @@ using Affix.Core;
 using HarmonyLib;
 using Prime.Core;
 using Prime.Modifiers;
+using Prime.Procs;
 
 namespace Affix.Patches
 {
@@ -26,6 +27,16 @@ namespace Affix.Patches
 
             Plugin.Log?.LogDebug($"Applying affix stats from: {item.m_shared?.m_name}");
             AffixStatManager.ApplyAffixStats(player, item);
+
+            // Register legendary ability proc if present
+            var uniqueAbility = AffixData.GetUniqueAbility(item);
+            if (uniqueAbility != null)
+            {
+                var itemId = AffixStatManager.GetItemId(item);
+                var procConfig = uniqueAbility.ToProcConfig();
+                ItemProcSystem.Instance.RegisterProc(player, itemId, procConfig);
+                Plugin.Log?.LogDebug($"Registered legendary proc '{uniqueAbility.Id}' for item {itemId}");
+            }
         }
     }
 
@@ -47,6 +58,14 @@ namespace Affix.Patches
 
             Plugin.Log?.LogDebug($"Removing affix stats from: {item.m_shared?.m_name}");
             AffixStatManager.RemoveAffixStats(player, item);
+
+            // Unregister legendary ability proc if present
+            if (AffixData.HasUniqueAbility(item))
+            {
+                var itemId = AffixStatManager.GetItemId(item);
+                ItemProcSystem.Instance.UnregisterProc(player, itemId);
+                Plugin.Log?.LogDebug($"Unregistered legendary proc for item {itemId}");
+            }
         }
     }
 
@@ -115,7 +134,7 @@ namespace Affix.Patches
         /// <summary>
         /// Gets a unique identifier for an item instance.
         /// </summary>
-        private static string GetItemId(ItemDrop.ItemData item)
+        public static string GetItemId(ItemDrop.ItemData item)
         {
             // Use the item's unique ID if available, otherwise fall back to hash
             if (item.m_customData != null && item.m_customData.TryGetValue("affix_uid", out var uid))

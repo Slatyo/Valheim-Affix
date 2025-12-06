@@ -55,6 +55,10 @@
       <HintPath>$(MOD_DEPLOYPATH)\Veneer\Veneer.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Spark">
+      <HintPath>$(MOD_DEPLOYPATH)\Spark\Spark.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <PropertyGroup>

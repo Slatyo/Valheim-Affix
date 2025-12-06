@@ -44,6 +44,7 @@ namespace Affix.Core
             }
 
             // Apply affixes if this drop should have them
+            // VFX is added automatically via ItemDrop.Start patch
             if (drop.HasAffixes)
             {
                 ApplyAffixes(itemDrop.m_itemData, drop.Rarity);
@@ -54,6 +55,7 @@ namespace Affix.Core
 
         /// <summary>
         /// Applies random affixes to an item based on rarity.
+        /// Also rolls a unique legendary ability for Legendary items.
         /// </summary>
         public static void ApplyAffixes(ItemDrop.ItemData item, Rarity rarity)
         {
@@ -66,18 +68,23 @@ namespace Affix.Core
                 return;
             }
 
-            // Generate affixes
-            var affixes = AffixGenerator.GenerateAffixes(itemType, rarity);
+            // Use GenerateForItem which handles both affixes and legendary abilities
+            AffixGenerator.GenerateForItem(item, rarity);
 
-            // Store on item
-            AffixData.SetAffixes(item, rarity, affixes);
-
+            // Log results
+            var affixes = AffixData.GetAffixes(item);
             Plugin.Log?.LogInfo($"Applied {affixes.Count} affixes ({rarity}) to {item.m_shared?.m_name}");
 
-            // Log each affix
             foreach (var affix in affixes)
             {
                 Plugin.Log?.LogDebug($"  - {affix.Definition.Name}: {affix.GetFormattedDescription()}");
+            }
+
+            // Log legendary ability if present
+            var uniqueAbility = AffixData.GetUniqueAbility(item);
+            if (uniqueAbility != null)
+            {
+                Plugin.Log?.LogInfo($"  Unique ability: {uniqueAbility.DisplayName} ({uniqueAbility.AbilityId})");
             }
         }
 

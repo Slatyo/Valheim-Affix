@@ -91,12 +91,36 @@ namespace Affix.Patches
 
             var prefabName = Utils.GetPrefabName(__instance.gameObject);
 
-            // Check if this item has pending affixes
+            // Check if this item has pending affixes from drop table
             if (AffixSpawnQueue.TryDequeue(prefabName, out var rarity))
             {
                 Plugin.Log?.LogDebug($"Applying queued affixes to {prefabName} ({rarity})");
                 AffixItemSpawner.ApplyAffixes(__instance.m_itemData, rarity);
             }
+        }
+    }
+
+    /// <summary>
+    /// Patches ItemDrop.Start to add VFX to any item with affixes in the world.
+    /// This handles items dropped from inventory, spawned, or from creature deaths.
+    /// </summary>
+    [HarmonyPatch(typeof(ItemDrop), nameof(ItemDrop.Start))]
+    public static class ItemDrop_Start_Patch
+    {
+        static void Postfix(ItemDrop __instance)
+        {
+            if (__instance == null || __instance.m_itemData == null) return;
+
+            // Check if item has affixes
+            if (!AffixData.HasAffixes(__instance.m_itemData)) return;
+
+            var rarity = AffixData.GetRarity(__instance.m_itemData);
+
+            // Skip common items (no VFX)
+            if (rarity == Rarity.Common) return;
+
+            // Add rarity VFX
+            DropVFXHelper.AddRarityEffect(__instance, rarity);
         }
     }
 

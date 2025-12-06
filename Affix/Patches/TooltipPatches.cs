@@ -74,6 +74,15 @@ namespace Affix.Patches
                 sb.AppendLine($"<color={rarityColor}>◆</color> {description}");
             }
 
+            // Add unique ability for Legendary items
+            var uniqueAbility = AffixData.GetUniqueAbility(item);
+            if (uniqueAbility != null)
+            {
+                sb.AppendLine(); // Blank line before unique ability
+                sb.AppendLine($"<color=#FF8000>★ {uniqueAbility.DisplayName}</color>");
+                sb.AppendLine($"<color=#CCCCCC>{uniqueAbility.Description}</color>");
+            }
+
             return sb.ToString().TrimEnd();
         }
     }
