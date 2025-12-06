@@ -60,12 +60,12 @@ namespace Affix
             _harmony = new Harmony(PluginGUID);
             _harmony.PatchAll();
 
-            // Register Veneer providers
+            // Register Veneer providers via public API
             _tooltipProvider = new AffixTooltipProvider();
-            Veneer.Components.Composite.VeneerTooltip.RegisterProvider(_tooltipProvider);
+            Veneer.Core.VeneerAPI.RegisterTooltipProvider(_tooltipProvider);
 
             _slotVisualProvider = new AffixSlotVisualProvider();
-            Veneer.Components.Specialized.VeneerItemSlot.RegisterVisualProvider(_slotVisualProvider);
+            Veneer.Core.VeneerAPI.RegisterSlotVisualProvider(_slotVisualProvider);
 
             // Register Munin commands (if Munin is loaded)
             RegisterCommands();
@@ -77,16 +77,16 @@ namespace Affix
         {
             UnregisterCommands();
 
-            // Unregister Veneer providers
+            // Unregister Veneer providers via public API
             if (_tooltipProvider != null)
             {
-                Veneer.Components.Composite.VeneerTooltip.UnregisterProvider(_tooltipProvider);
+                Veneer.Core.VeneerAPI.UnregisterTooltipProvider(_tooltipProvider);
                 _tooltipProvider = null;
             }
 
             if (_slotVisualProvider != null)
             {
-                Veneer.Components.Specialized.VeneerItemSlot.UnregisterVisualProvider(_slotVisualProvider);
+                Veneer.Core.VeneerAPI.UnregisterSlotVisualProvider(_slotVisualProvider);
                 _slotVisualProvider = null;
             }
 
